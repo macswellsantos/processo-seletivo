@@ -6,25 +6,63 @@
 	<link rel="shortcut icon" href="favicon.ico"/>
 	<title>Cadastrar um novo Produto </title>
 	<link rel="stylesheet" type="text/css"
-		href="resources/css/bootstrap.min.css">
+		href="../resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css"
-		href="resources/css/main.css">
+		href="../resources/css/bootstrap-vue.css">
 </head>
 
 <body>
 
-<a href="/funcionarios/index.html">Voltar</a>
-
 <div id="app">
-	<p>{{mensagem}}</p>
-	
-	<h4>Cadastro de funcionário</h4>
+
+<h3><a href="/funcionarios"><span>&#8617;</span>Voltar</a></h3>
+
+
+
+	<div class="alert alert-success alert-dismissible fade show" role="alert" v-if="visible" v-bind:class="{ 'alert-danger': hasError }">
+	  {{mensagem}}
+	</div>
 		
-	<p>Implementar o cadastro de funcionário</p>	
+	<div class="col">
+        <div class="container mx-auto py-5 mt-5 jumbotron" style="width: 600px;">
+            <h3 class="text-center text-uppercase">Cadastro de funcionário</h3>
+            <form name="form" v-on:submit.prevent="enviar">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input class="form-control" type="text" name="nome"  placeholder="Nome" v-model="funcionario.nome">
+                </div>
+                <div class="form-group">
+                    <label>Setor</label>
+                    <select class="form-control form-control-lg" v-model="selecionado" >
+					  <option v-for="setor in setores" v-bind:value="setor.id">
+					    {{ setor.nome }}
+					  </option>
+					</select>
+					<a href="#"><span v-on:click.prevent="teste">Cadastrar novo setor</span></a>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input class="form-control" type="email" name="email" placeholder="Endereço de e-mail" v-model="funcionario.email">
+                </div>
+                <div class="form-group">
+                    <label>Idade</label>
+                    <input class="form-control" type="number" name="idade" v-model="funcionario.idade">
+                </div>
+                <div class="form-group">
+                    <label>Salario</label>
+                    <input class="form-control" type="number" name="salario" v-model="funcionario.salario" step="any">
+                </div>
+                
+                <button class="btn btn-primary mb-1" type="submit">
+                    Salvar
+                </button>
+            </form>
+        </div>
+    </div>	
 </div>
 
-	<script src="resources/js/vue.js"></script>
-	<script src="resources/js/axios.min.js"></script>
-	<script src="resources/js/cadastro-de-funcionario.js"></script>
+	<script src="../resources/js/vue.js"></script>
+	<script src="../resources/js/axios.min.js"></script>
+	<script src="../resources/js/cadastro-de-funcionario.js"></script>
 </body>
 </html>

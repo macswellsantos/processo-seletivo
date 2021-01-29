@@ -15,31 +15,35 @@
 
 
 	<div id="inicio" class="container-fluid table" >
-		<h4>Lista dos Funcionários</h4>
-		<table>
+	<div class="container mx-auto py-5 mt-5 jumbotron" style="width: 950px;">
+          <h3 class="text-center text-uppercase">Lista de Funcionários</h3>
+            <button class="btn btn-primary" @click="">Novo</button>
+		<table class="table">
 		  <tr>
 			<th>Nome</th>
 			<th>Setor</th>
 			<th>Salário</th>
 			<th>Email</th>
 			<th>Idade</th>
-			<th></th>
-			<th></th>
+			<th>Ações</th>
 		  </tr>
 		  <tbody id="event-table" >
-			<tr v-for="funcionario in listaProdutos">
+			<tr v-for="funcionario in listaFuncionarios">
 			  <td>{{ funcionario.nome }}</td> 
 			  <td>{{ funcionario.setor.nome }}</td> 
 			  <td>{{ funcionario.salario }}</td> 
 			  <td>{{ funcionario.email }}</td> 
 			  <td>{{ funcionario.idade }}</td>
-			  <td><span @click="">&#9998;</span>
-				<span  @click="">&#10006;</span>
+			  <td><button class="btn" @click="editar"><span>&#9998;</span></button>
+				<button class="btn" @click="deletar(funcionario.id)"><span>&#10006;</span></button>
 			  </td>
 			</tr>
 		  </tbody>
 		</table>
 	  </div>
+	  
+	  </div>
+	  
 
 	<script src="resources/js/vue.js"></script>
 	<script src="resources/js/axios.min.js"></script>

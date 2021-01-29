@@ -1,28 +1,43 @@
 var inicio = new Vue({
 	el:"#inicio",
     data: {
-        listaProdutos: [],
-        listaProdutosHeader: [
-			{sortable: false, key: "nome", label:"Nome"},
-			{sortable: false, key: "fabricante.nome", label:"Fabricante"},
-			{sortable: false, key: "volume", label:"Volume"},
-			{sortable: false, key: "unidade", label:"Unidade"},
-			{sortable: false, key: "estoque", label:"Estoque"}
-		]
+        listaFuncionarios: [],
+        funcionario: ""
     },
     created: function(){
         let vm =  this;
-        vm.buscaProdutos();
+        vm.buscaFuncionarios();
     },
     methods:{
-        buscaProdutos: function(){
+        buscaFuncionarios: function(){
 			const vm = this;
 			axios.get("/funcionarios/rs/funcionarios")
-			.then(response => {vm.listaProdutos = response.data;
+			.then(response => {vm.listaFuncionarios = response.data;
 			}).catch(function (error) {
 				vm.mostraAlertaErro("Erro interno", "Não foi listar natureza de serviços");
 			}).finally(function() {
 			});
 		},
-    }
+		deletar: function(id){
+			console.log("OH!");
+			const vm = this;
+			axios.delete("/funcionarios/rs/funcionarios/"+id).then(function(){
+                inicio.buscaFuncionarios();
+            }).catch(function (error) {
+				vm.mostraAlertaErro("Erro interno", "Não foi listar natureza de serviços");
+			}).finally(function() {
+			});
+		},
+		editar: function(id){
+			console.log("OH!");
+			const vm = this;
+			axios.get("/funcionarios/rs/funcionarios/"+id)
+			.then( response => {vm.funcionario = response.data;
+			}).catch(function (error) {
+				vm.mostraAlertaErro("Erro interno", "Não foi listar natureza de serviços");
+			}).finally(function() {
+			});
+		},
+	}
+	
 });

@@ -52,7 +52,14 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@POST
 	public Response FuncionarioCreate(Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		
+		try {
+			dao.save(Funcionario);
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar funcionário").build();
+		}
+		
+		return Response.status(Status.OK).build();
 	}
 
 	/**
@@ -73,6 +80,8 @@ public class FuncionarioService {
 
 		GenericEntity<List<Funcionario>> entity = new GenericEntity<List<Funcionario>>(Funcionarios) {
 		};
+		
+		
 		return Response.status(Status.OK).entity(entity).build();
 	}
 
@@ -87,8 +96,19 @@ public class FuncionarioService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT
-	public Response FuncionarioUpdate(@PathParam("id") Integer id, Funcionario Funcionario) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+	public Response FuncionarioUpdate(@PathParam("id") Integer id, Funcionario funcionario) {
+		
+		try {
+			
+			dao.update(funcionario);
+			System.out.println(funcionario.getId());
+			
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao alterar funcionário").build();
+		}
+		
+		
+		return Response.status(Status.OK).build();
 	}
 
 	/**
@@ -101,7 +121,37 @@ public class FuncionarioService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@DELETE
 	public Response FuncionarioDelete(@PathParam("id") Integer id) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		
+		try{
+			dao.delete(id);
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro ao deletar funcionário").build();
+		}
+		
+		return Response.status(Status.OK).build();
 	}
+	
+	
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	public Response FuncionarioFind(@PathParam("id") Integer id) {
+		Funcionario funcionario = new Funcionario();
+		GenericEntity<Funcionario> entity;
+		try {
+			funcionario = dao.find(id);
+			entity = new GenericEntity<Funcionario>(funcionario) {
+			};
+		} catch (Exception e) {
+			return Response.status(Status.NOT_FOUND).entity("Erro ao buscar Funcionarios").build();
+		}
+
+		
+		
+		
+		return Response.status(Status.OK).entity(entity).build();
+	}
+	
+	
 
 }
