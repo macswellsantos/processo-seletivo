@@ -1,9 +1,10 @@
 package com.hepta.funcionarios.rest;
 
 
-import org.junit.Test;
 
 import static io.restassured.RestAssured.*;
+
+import org.junit.jupiter.api.Test;
 
 public class FuncionarioServiceTest {
 
@@ -12,7 +13,7 @@ public class FuncionarioServiceTest {
 	@Test
 	public void testFuncionarioRead() {
 		given().
-		when().get("https://pokeapi.co/api/v2/pokemon/1").then().log().all();
+		when().get("/funcionarios").then().log().all();
 		
 	}
 
