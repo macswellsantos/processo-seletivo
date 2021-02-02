@@ -143,13 +143,18 @@ public class FuncionarioService {
 			entity = new GenericEntity<Funcionario>(funcionario) {
 			};
 		} catch (Exception e) {
-			return Response.status(Status.NOT_FOUND).entity("Erro ao buscar Funcionarios").build();
+			return Response.status(Status.NOT_FOUND).entity("Erro ao buscar Funcionarios").
+					header("Access-Control-Allow-Origin", "*").
+					header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").
+					header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia").
+					build();
 		}
 
-		
-		
-		
-		return Response.status(Status.OK).entity(entity).build();
+		return Response.status(Status.OK).entity(entity).
+				header("Access-Control-Allow-Origin", "*").
+				header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT").
+				header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia").
+				build();
 	}
 	
 	

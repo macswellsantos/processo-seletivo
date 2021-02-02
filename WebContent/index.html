@@ -2,50 +2,118 @@
 <html>
 
 <head>
-<meta charset="utf-8">
-<link rel="shortcut icon" href="favicon.ico"/>
-<title>Funcionários - Início</title>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap-vue.css">
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="favicon.ico"/>
+	<title>Funcionários - Início</title>
+	<link rel="stylesheet" type="text/css"
+		href="resources/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="resources/css/bootstrap-vue.css">
 </head>
 
 <body>
 
 
 	<div id="inicio" class="container-fluid table" >
-	<div class="container mx-auto py-5 mt-5 jumbotron" style="width: 950px;">
-          <h3 class="text-center text-uppercase">Lista de Funcionários</h3>
-            <button class="btn btn-primary" @click="">Novo</button>
-		<table class="table">
-		  <tr>
-			<th>Nome</th>
-			<th>Setor</th>
-			<th>Salário</th>
-			<th>Email</th>
-			<th>Idade</th>
-			<th>Ações</th>
-		  </tr>
-		  <tbody id="event-table" >
-			<tr v-for="funcionario in listaFuncionarios">
-			  <td>{{ funcionario.nome }}</td> 
-			  <td>{{ funcionario.setor.nome }}</td> 
-			  <td>{{ funcionario.salario }}</td> 
-			  <td>{{ funcionario.email }}</td> 
-			  <td>{{ funcionario.idade }}</td>
-			  <td><button class="btn" @click="editar"><span>&#9998;</span></button>
-				<button class="btn" @click="deletar(funcionario.id)"><span>&#10006;</span></button>
-			  </td>
-			</tr>
-		  </tbody>
-		</table>
-	  </div>
-	  
-	  </div>
-	  
+		<div class="alert alert-success alert-dismissible fade show" role="alert" v-if="visible" v-bind:class="{ 'alert-danger': hasError }">
+		  {{mensagem}}
+		   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+	
+    <div class="container mx-auto py-5 mt-5 jumbotron" style="width: 600px;" v-if="visibleCad">
+    	<form name="form" v-on:submit.prevent="enviar">
+			<div class="row">
+	        	<div class="form-group col-sm">
+	            	<label for="nome">Nome</label>
+	            	<input type="text" class="form-control" id="nome" v-model="funcionario.nome">  
+	          	</div>
+	        	<div class="form-group col-sm">
+	            	<label for="email">Email</label>
+	            	<input type="email" class="form-control" id="email" v-model="funcionario.email"> 
+	          	</div>
+			</div>
+        	<div class="row">
+          		<div class="form-group col-sm">
+            		<label for="selected">Setor</label>
+            		<select class="form-control col-sm" v-model="selecionado" >
+		    			<option v-for="setor in SetoresOrdenados" v-bind:value="setor.id">
+			       		{{ setor.nome }}
+			 			</option>
+		    		</select>
+            		<small id="setorAdd" class="form-text text-muted"><a href="#" data-toggle="modal" data-target="#setorModal">Adicionar Setor</a></small>
+         		 </div>
+			</div>
+	        <div class="row">
+	        	<div class="form-group col-sm">
+	            	<label for="idade">Idade</label>
+	            	<input type="number" class="form-control" id="idade" v-model="funcionario.idade">  
+	          	</div>
+	          	<div class="form-group col-sm">
+	            	<label for="salario">Salário</label>
+	            	<input type="number" class="form-control" id="salario" v-model="funcionario.salario" step="any">
+	          	</div>
+			</div>
+       		<button type="submit" class="btn btn-primary">{{botao}}</button>
+        	<button type="button" class="btn btn-secondary" @click="fechar()">Cancelar</button>
+      	</form>
+      
+		<div class="modal fade" id="setorModal" tabindex="-1" role="dialog" aria-labelledby="setorModalTitle" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+		    		<div class="modal-header">
+		        		<h5 class="modal-title" id="setorModalTitle">Cadastrar Setor</h5>
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          			<span aria-hidden="true">&times;</span>
+		        		</button>
+		      		</div>
+		      		<div class="modal-body">
+		        		<div class="form-group">
+		            		<label for="novoSetor">Setor</label>
+		            		<input type="text" class="form-control" id="novoSetor" placeholder="Nome do setor" v-model="novoSetor">  
+		      			</div>
+		      			<div class="modal-footer">
+		        			<button type="button" class="btn btn-primary" data-dismiss="modal" @click="adicionaSetor()">Adicionar</button>
+		      			</div>
+		    		</div>
+		  		</div>
+			</div>
+    	</div>
+	</div>
+	
+		<div class="container mx-auto py-5 mt-5 jumbotron" style="width: 950px;">
+			<h3 class="text-center text-uppercase">Lista de Funcionários</h3>
+	        	<button type="button" class="btn btn-primary" @click="novo()">Novo</button>
+				<table class="table">
+			  		<tr>
+						<th>Nome</th>
+						<th>Setor</th>
+						<th>Salário</th>
+						<th>Email</th>
+						<th>Idade</th>
+						<th>Ações</th>
+			 		</tr>
+			  		<tbody id="event-table" >
+						<tr v-for="funcionario in listaFuncionarios">
+				  			<td>{{ funcionario.nome }}</td> 
+							<td>{{ funcionario.setor.nome }}</td> 
+							<td>{{ funcionario.salario }}</td> 
+							<td>{{ funcionario.email }}</td> 
+							<td>{{ funcionario.idade }}</td>
+				  			<td>
+				  				<button class="btn" @click="editar(funcionario.id)"><span>&#9998;</span></button>
+								<button class="btn" @click="deletar(funcionario.id)"><span>&#10006;</span></button>
+				  			</td>
+						</tr>
+			  		</tbody>
+				</table>
+		  	</div>
+	 	</div>
 
-	<script src="resources/js/vue.js"></script>
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+    <script src="resources/js/vue.js"></script>
 	<script src="resources/js/axios.min.js"></script>
 	<script src="resources/js/index.js"></script>
 </body>

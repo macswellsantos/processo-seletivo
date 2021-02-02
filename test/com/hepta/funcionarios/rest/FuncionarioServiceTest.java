@@ -1,34 +1,19 @@
 package com.hepta.funcionarios.rest;
 
-import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class FuncionarioServiceTest {
+import static io.restassured.RestAssured.*;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+public class FuncionarioServiceTest {
+
+
 	
 	@Test
-	void testFuncionarioRead() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testFuncionarioCreate() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testFuncionarioUpdate() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testFuncionarioDelete() {
-		fail("Not yet implemented");
+	public void testFuncionarioRead() {
+		given().
+		when().get("https://pokeapi.co/api/v2/pokemon/1").then().log().all();
+		
 	}
 
 }

@@ -1,8 +1,8 @@
-var inicio = new Vue({
+var app = new Vue({
 	el:"#app", 
     data: {
-    	mensagem: "",
-    	visible: false,
+    	mensagem: $inicio.$root.funcionario.id,
+    	visible: true,
     	funcionario: [],
     	selecionado : "",
     	setores: [],
